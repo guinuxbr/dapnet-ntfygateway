@@ -9,7 +9,7 @@ You'll need SSH access to your MMDVM node. Start off by making sure you have the
 If you use Ubuntu or another Debian based Linux distribution:
 
 ```shell
-sudo apt update
+sudo apt update && sudo apt upgrade
 ```
 
 ```shell
@@ -52,6 +52,12 @@ source ./venv/bin/activate
 pip install -r requirements.txt
 ```
 
+Create the folder to store the logs.
+
+```shell
+mkdir -p ~/logs/dapnet-ntfygateway
+```
+
 There, all installed.  Next thing is to prep your config file.
 
 Copy the sample config into the live location:
@@ -89,25 +95,31 @@ To make the script start at boot and to keep it running in the background, we wi
 Copy the service file to the right location.
 
 ``` shell
-sudo cp dapnet-ntfygateway.service /etc/systemd/system/
+cp dapnet-ntfygateway.service ~/.config/systemd/user/
 ```
 
 Ensure the service file have the correct permissions.
 
 ``` shell
-sudo chmod 755 /etc/systemd/system/dapnet-ntfygateway.service
+chmod 644 ~/.config/systemd/user/dapnet-ntfygateway.service
 ```
 
 Make SystemD aware of the new service file.
 
 ```shell
-sudo systemctl daemon-reload
+systemctl --user daemon-reload
 ```
 
-Enable and start the service.
+Start the service.
 
 ```shell
-sudo systemctl enable --now dapnet-ntfygateway.service
+systemctl --user start dapnet-ntfygateway.service
+```
+
+Enable the service.
+
+```shell
+systemctl --user enable dapnet-ntfygateway.service
 ```
 
 Good luck, and reach out to me (via [QRZ](https://qrz.com/db/M7TLB)) if you have any issues.

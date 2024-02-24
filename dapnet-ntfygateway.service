@@ -5,12 +5,12 @@ After=network.target
 [Service]
 Type=simple
 User=pi-star
-Environment=DAPNET_NTFYGATEWAY_PATH=$HOME/git/dapnet-ntfygateway
-WorkingDirectory=$DAPNET_NTFYGATEWAY_PATH
-ExecStart=$DAPNET_NTFYGATEWAY_PATH/venv/bin/python $DAPNET_NTFYGATEWAY_PATH/dapnet_ntfygateway.py
-StandardOutput=/var/log/dapnet-ntfygateway/stdout.log
-StandardError=/var/log/dapnet-ntfygateway/stderr.log
+WorkingDirectory=/home/pi-star/git/dapnet-ntfygateway
+ExecStart=/home/pi-star/git/dapnet-ntfygateway/venv/bin/python /home/pi-star/git/dapnet-ntfygateway/dapnet_ntfygateway.py
+StandardOutput=/home/pi-star/logs/dapnet-ntfygateway/stdout.log
+StandardError=/home/pi-star/logs/dapnet-ntfygateway/stderr.log
 Restart=on-failure
+RestartSec=5s
 
 [Install]
 WantedBy=multi-user.target
