@@ -13,7 +13,7 @@ sudo apt update
 ```
 
 ```shell
-sudo apt install git python3 python3-venv screen
+sudo apt install git python3 python3-venv
 ```
 
 It's likely you'll already have `python3` installed, but it doesn't hurt to check.  It's also kinda necessary.
@@ -82,26 +82,32 @@ Now edit your `config.json` file in your favourite text editor.  The bits to cha
 
 You're ready to go!
 
-## Running the script
+## Configuring the script as a service
 
-To kick the script off, enter the following command:
+To make the script start at boot and to keep it running in the background, we will use a SystemD service.
+
+Copy the service file to the right location.
 
 ``` shell
-./monitor_helper.sh start
+sudo cp dapnet-ntfygateway.service /etc/systemd/system/
 ```
 
-This will start the process in a detached `screen` session.
+Ensure the service file have the correct permissions.
 
-If you want to make sure that this script starts on boot, then use the following command:
-
-```shell
-./monitor_helper.sh enable
+``` shell
+sudo chmod 755 /etc/systemd/system/dapnet-ntfygateway.service
 ```
 
-If you want to know if the script is running, or if the script is set to start on boot, use the following command:
+Make SystemD aware of the new service file.
 
 ```shell
-./monitor_helper.sh status
+sudo systemctl daemon-reload
+```
+
+Enable and start the service.
+
+```shell
+sudo systemctl enable --now dapnet-ntfygateway.service
 ```
 
 Good luck, and reach out to me (via [QRZ](https://qrz.com/db/M7TLB)) if you have any issues.
