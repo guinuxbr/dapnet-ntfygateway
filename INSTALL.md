@@ -13,7 +13,7 @@ wget -q -O install.sh https://raw.githubusercontent.com/guinuxbr/dapnet-ntfygate
 ```
 
 ```shell
-wget -q -O install.sh https://raw.githubusercontent.com/guinuxbr/dapnet-ntfygateway/main/install.sh.sha256
+wget -q -O install.sh.sha256 https://raw.githubusercontent.com/guinuxbr/dapnet-ntfygateway/main/install.sh.sha256
 ```
 
 Check the downloaded file (optional, but highly recommended).
