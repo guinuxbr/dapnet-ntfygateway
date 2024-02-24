@@ -92,6 +92,12 @@ You're ready to go!
 
 To make the script start at boot and to keep it running in the background, we will use a SystemD service.
 
+Ensure the correct folder to host `Systemd` user services exists.
+
+```shell
+mkdir -p ~/.config/systemd/user/
+```
+
 Copy the service file to the right location.
 
 ``` shell
@@ -104,7 +110,7 @@ Ensure the service file have the correct permissions.
 chmod 644 ~/.config/systemd/user/dapnet-ntfygateway.service
 ```
 
-Make SystemD aware of the new service file.
+Make `Systemd` aware of the new service file.
 
 ```shell
 systemctl --user daemon-reload

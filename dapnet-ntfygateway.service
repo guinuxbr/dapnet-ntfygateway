@@ -4,11 +4,10 @@ After=network.target
 
 [Service]
 Type=simple
-User=pi-star
 WorkingDirectory=/home/pi-star/git/dapnet-ntfygateway
 ExecStart=/home/pi-star/git/dapnet-ntfygateway/venv/bin/python /home/pi-star/git/dapnet-ntfygateway/dapnet_ntfygateway.py
-StandardOutput=/home/pi-star/logs/dapnet-ntfygateway/stdout.log
-StandardError=/home/pi-star/logs/dapnet-ntfygateway/stderr.log
+StandardOutput=append:/home/pi-star/logs/dapnet-ntfygateway/stdout.log
+StandardError=append:/home/pi-star/logs/dapnet-ntfygateway/stderr.log
 Restart=on-failure
 RestartSec=5s
 
