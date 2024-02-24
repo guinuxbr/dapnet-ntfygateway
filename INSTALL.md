@@ -90,7 +90,7 @@ You're ready to go!
 
 ## Configuring the script as a service
 
-To make the script start at boot and to keep it running in the background, we will use a SystemD service.
+To make the script start at boot and to keep it running in the background, we will use a `Systemd` service.
 
 Ensure the correct folder to host `Systemd` user services exists.
 
