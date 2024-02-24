@@ -1,15 +1,23 @@
+"""This module holds functions to handle the messages"""
+
 import re
 import time
 
 import requests
 
 
-def extract_message(message_text, settings):
-    """
-    This takes a raw line from the DAPNETGateway logfile that we're
+def extract_message(message_text: str, settings: dict) -> dict:
+    """This takes a raw line from the DAPNETGateway logfile that we're
     currently monitoring, and if it recognises is as one of the message
     types we're looking for, extracts the pertinent data into a more
     structured format via the message dictionary, which is returned.
+
+    Args:
+        message_text (str): _the raw logfile entry text to be parsed_
+        settings (dict): _the settings dictionary_
+
+    Returns:
+        dict: _a dictionary containing the message and associated metadata determined by this function_
     """
 
     # Checking for Message
@@ -66,9 +74,12 @@ def extract_message(message_text, settings):
     return message
 
 
-def send_to_ntfy(message, endpoint):
-    """
-    Send the message, defined in the message dictionary, to the ntf.sh service
+def send_to_ntfy(message: dict, endpoint: str) -> None:
+    """Send the message, defined in the message dictionary, to the ntf.sh service.
+
+    Args:
+        message (dict): _the message dictionary created by extract_message()_
+        endpoint (str): _the ntfy.sh endpoint that the message should be delivered to_
     """
 
     ntfy_headers = {}
@@ -77,7 +88,9 @@ def send_to_ntfy(message, endpoint):
     ntfy_headers["Priority"] = str(message["priority"])
     ntfy_headers["Title"] = message["subject"]
 
-    response = requests.post(endpoint, data=message["body"], headers=ntfy_headers)
+    response = requests.post(
+        endpoint, data=message["body"], headers=ntfy_headers, timeout=10
+    )
 
     response_text = str(response.status_code)
 
@@ -87,11 +100,15 @@ def send_to_ntfy(message, endpoint):
     print(f"[{response_text}]")
 
 
-def info_message(infotype, settings, **kwargs):
+def info_message(infotype: str, settings: dict, **kwargs) -> None:
+    """A special function for crafting informational messages.
+    These are static, and defined by the infotype parameter.
+
+    Args:
+        infotype (str): _a static string to determine which informational message to send_
+        settings (dict): _the settings dictionary_
     """
-    A special function for crafting informational messages.
-    These are static, and defined by the infotype parameter
-    """
+
     logfile = kwargs.get("optional", None)
 
     message = {}
@@ -133,11 +150,14 @@ def info_message(infotype, settings, **kwargs):
         send_message(message, settings)
 
 
-def send_message(message, settings):
-    """
-    This function prepares the message for sending, and applies
+def send_message(message: dict, settings: dict) -> None:
+    """This function prepares the message for sending, and applies
     a series of rules to determine whether the message should be
     sent out of not.  If it deems that it should, it does!
+
+    Args:
+        message (dict): _the message dictionary created by extract_message()_
+        settings (dict): _the settings dictionary_
     """
 
     print(message)
@@ -148,10 +168,10 @@ def send_message(message, settings):
         is_target_profile_enabled = False
 
         # The rules here are a little complex, but to determine whether a message can potentially be sent to a given user:
-        #   a. the type needs to contained within the enabled message types within the profile, AND any of:
-        #     x. the target RIC is same as that in the profile, or
-        #     y. the text contains the same callsign as that in the profile, or
-        #     z. the message type is I (information) or E (error)
+        #  a. the type needs to contained within the enabled message types within the profile, AND any of:
+        #    x. the target RIC is same as that in the profile, or
+        #    y. the text contains the same callsign as that in the profile, or
+        #    z. the message type is I (information) or E (error)
         if message["type"] in settings["profiles"][profile]["messagetypes"]:
 
             if (
@@ -174,8 +194,8 @@ def send_message(message, settings):
 
         # If the message is ready to be sent AND the target profile is enabled, then send the message!
         if (
-            is_addressable_to_target_profile == True
-            and is_target_profile_enabled == True
+            is_addressable_to_target_profile is True
+            and is_target_profile_enabled is True
         ):
             print(settings["profiles"][profile])
             send_to_ntfy(message, settings["profiles"][profile]["endpoint"])

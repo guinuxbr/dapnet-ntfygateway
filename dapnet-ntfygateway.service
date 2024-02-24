@@ -1,0 +1,16 @@
+[Unit]
+Description=Picks up DAPNET calls from an MMDVM node, and forwards it to a ntfy.sh topic.
+After=network.target
+
+[Service]
+Type=simple
+User=pi-star
+Environment=DAPNET_NTFYGATEWAY_PATH=$HOME/git/dapnet-ntfygateway
+WorkingDirectory=$DAPNET_NTFYGATEWAY_PATH
+ExecStart=$DAPNET_NTFYGATEWAY_PATH/venv/bin/python $DAPNET_NTFYGATEWAY_PATH/dapnet_ntfygateway.py
+StandardOutput=/var/log/dapnet-ntfygateway/stdout.log
+StandardError=/var/log/dapnet-ntfygateway/stderr.log
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

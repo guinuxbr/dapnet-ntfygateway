@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""Main function, where the magic happens! :)"""
 
 import func_general
 import func_messages
@@ -31,8 +32,7 @@ if __name__ == "__main__":
         # Send informational message that we're waiting for the logfile
         func_messages.info_message("logfile_waiting", settings, optional=filename)
 
-        # Sit here and wait until the file actually exists
-        #     (or the current date changes again)
+        # Sit here and wait until the file actually exists (or the current date changes again)
         file_exists = func_general.wait_for_todays_file(filename, current_date)
 
         # Send informational message that we're monitoring the logfile
@@ -43,7 +43,7 @@ if __name__ == "__main__":
         if file_exists:
 
             # Open the file for reading
-            with open(filename, "r") as logfile:
+            with open(filename, "r", encoding="UTF-8") as logfile:
 
                 # Create the generator
                 loglines = func_general.follow(logfile, seek_to_end, current_date)
