@@ -24,6 +24,14 @@ sha256sum -c install.sh.sha256
 
 If the output says `"install.sh: OK"`, it means the downloaded script matches the original one. Otherwise, do not proceed with running the script and contact [thelovebug](https://github.com/thelovebug) for assistance.
 
+Run the installation script and follow the prompts.
+
+```shell
+source install.sh
+```
+
+### Manual installation
+
 You'll need SSH access to your MMDVM node. Start off by making sure you have the correct software installed to run this script:
 
 If you use Ubuntu or another Debian based Linux distribution:
