@@ -4,6 +4,26 @@
 
 *You should only ever need to do this once - unless you totally b0rk it!*
 
+### Automated installation
+
+Download the installation script and the checksum file.
+
+```shell
+wget -q -O install.sh https://raw.githubusercontent.com/guinuxbr/dapnet-ntfygateway/main/install.sh
+```
+
+```shell
+wget -q -O install.sh https://raw.githubusercontent.com/guinuxbr/dapnet-ntfygateway/main/install.sh.sha256
+```
+
+Check the downloaded file (optional, but highly recommended).
+
+```shell
+sha256sum -c install.sh.sha256
+```
+
+If the output says `"install.sh: OK"`, it means the downloaded script matches the original one. Otherwise, do not proceed with running the script and contact [thelovebug](https://github.com/thelovebug) for assistance.
+
 You'll need SSH access to your MMDVM node. Start off by making sure you have the correct software installed to run this script:
 
 If you use Ubuntu or another Debian based Linux distribution:

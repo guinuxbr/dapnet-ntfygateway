@@ -18,14 +18,14 @@ fi
 
 # Update the system and install OS dependencies
 echo ""
-echo -e "${GREEN}Updating the system and installing OS dependencies...${RESET}"
+echo -e "🕛 ${GREEN}Updating the system and installing OS dependencies...${RESET}"
 sudo apt update
 sudo apt upgrade -y 
 sudo apt install -y git python3 python3-venv
 
 # Create the needed directories
 echo ""
-echo -e "${GREEN}Creating the needed directories...${RESET}"
+echo -e "🕛 ${GREEN}Creating the needed directories...${RESET}"
 mkdir -p /home/pi-star/git
 echo -e "✅ ${GREEN}Ensuring /home/pi-star/git/ exists...${RESET}"
 mkdir -p /home/pi-star/logs/dapnet-ntfygateway
@@ -35,36 +35,52 @@ echo -e "✅ ${GREEN}Ensuring /home/pi-star/.config/systemd/user/ exists...${RES
 
 # Clone the repository
 echo ""
-echo -e "${GREEN}Cloning the repository...${RESET}"
-git clone https://github.com/guinuxbr/dapnet-ntfygateway.git /home/pi-star/git/dapnet-ntfygateway
+echo -e "🕛 ${GREEN}Cloning the repository...${RESET}"
+git clone --quiet https://github.com/guinuxbr/dapnet-ntfygateway.git /home/pi-star/git/dapnet-ntfygateway
 
 # Entering the cloned repository directory
 cd /home/pi-star/git/dapnet-ntfygateway || { echo -e "❌ ${RED}Failed to enter the cloned repository directory${RESET}"; exit 1;}
 
 # Create and activate the virtual environment
 echo ""
-echo -e "${GREEN}Creating and activating the virtual environment...${RESET}"
+echo -e "🕛 ${GREEN}Creating and activating the virtual environment...${RESET}"
 python3 -m venv venv
 source venv/bin/activate
 
 # Install Python dependencies
 echo ""
-echo -e "${GREEN}Installing Python dependencies...${RESET}"
-pip install -r requirements.txt
+echo -e "🕛 ${GREEN}Installing Python dependencies...${RESET}"
+pip install -r requirements.txt 1>/dev/null
+echo -e "✅ ${YELLOW}Disabling the virtual environment as it is not needed anymore...${RESET}"
+deactivate
 
 # Prepare the config file
+# TODO: Implement a proper check for the config file 
 echo ""
-echo -e "${GREEN}Preparing the config file...${RESET}"
+echo -e "🕛 ${GREEN}Preparing the config file...${RESET}"
 cp config.json.example config.json
+if [[ ! -f "/home/pi-star/git/dapnet-ntfygateway/config.json" ]]; then
+    echo -e "❌ ${RED}Failed to prepare the config file${RESET}"
+    exit 1
+else
+    echo -e "✅ ${GREEN}Config file prepared${RESET}"
+fi
 
 # Create the systemd service
 echo ""
-echo -e "${GREEN}Creating the systemd service...${RESET}"
+echo -e "🕛 ${GREEN}Creating the systemd service...${RESET}"
 cp dapnet-ntfygateway.service /home/pi-star/.config/systemd/user/dapnet-ntfygateway.service
+if [[ ! -f "/home/pi-star/.config/systemd/user/dapnet-ntfygateway.service" ]]; then
+    echo -e "❌ ${RED}Failed to create the systemd service${RESET}"
+    exit 1
+else
+    echo -e "✅ ${GREEN}Systemd service created${RESET}"
+fi
+echo -e "✅ ${GREEN}Reloading Systemd daemon${RESET}"
 systemctl --user daemon-reload
 
 # Start and enable the service
 echo ""
-echo -e "${GREEN}Starting and enabling the service...${RESET}"
+echo -e "🕛 ${GREEN}Starting and enabling the service...${RESET}"
 systemctl --user start dapnet-ntfygateway.service
-systemctl --user enable dapnet-ntfygateway.service
+systemctl --user enable dapnet-ntfygateway.service 
