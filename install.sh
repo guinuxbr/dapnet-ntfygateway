@@ -84,3 +84,6 @@ echo ""
 echo -e "🕛 ${GREEN}Starting and enabling the service...${RESET}"
 systemctl --user start dapnet-ntfygateway.service
 systemctl --user enable dapnet-ntfygateway.service 
+
+# Moving back to pi-star /home directory
+cd /home/pi-star || { echo -e "❌ ${RED}Failed to move back to /home/pi-star${RESET}"; exit 1;}
