@@ -34,7 +34,7 @@ echo -e "${GREEN}Cloning the repository...${RESET}"
 git clone https://github.com/guinuxbr/dapnet-ntfygateway.git /home/pi-star/git/dapnet-ntfygateway
 
 # Entering the cloned repository directory
-cd - /home/pi-star/git/dapnet-ntfygateway || echo -e "${RED}Failed to enter the cloned repository directory${RESET}" && exit 1
+cd /home/pi-star/git/dapnet-ntfygateway || echo -e "${RED}Failed to enter the cloned repository directory${RESET}" && exit 1
 
 # Create and activate the virtual environment
 echo -e "${GREEN}Creating and activating the virtual environment...${RESET}"
